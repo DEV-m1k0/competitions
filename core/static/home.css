@@ -21,7 +21,7 @@
     -o-border-radius: 100%;
 }
 
-.block-1 {
+.block {
     box-shadow: 0px 0px 5px grey;
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -31,14 +31,13 @@
 }
 
 .block-1 .btn-show {
-    width: 200px;
+    width: 300px;
 }
 
-.block-2 {
-    box-shadow: 0px 0px 5px grey;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
+.body .row {
+    height: 335px;
+}
+
+.block-news {
+    height: 80vh;
 }

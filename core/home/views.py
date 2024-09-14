@@ -1,4 +1,5 @@
 from typing import Any
+from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -16,3 +17,22 @@ class HomeView(TemplateView):
         context['sys_admin'] = MyUser.objects.filter(role='Системный администратор')
 
         return context
+    
+
+class HomeUsersView(TemplateView):
+    def get(self, request: HttpRequest, id: int, *args: Any, **kwargs: Any) -> HttpResponse:
+
+        role = {
+            0: 'Администратор системы',
+            1: 'Системный администратор',
+            2: 'Контент менеджер аппарата управления',
+            3: 'Редактор',
+            4: 'Пользователь системы'
+        }[id]
+
+        context = {
+            'users': MyUser.objects.filter(role=role),
+            'title': role
+        }
+
+        return render(request=request, template_name='home.html', context=context)
