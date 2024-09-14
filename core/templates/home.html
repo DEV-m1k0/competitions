@@ -3,7 +3,7 @@
 
 
 {% block links %}
-
+    <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
 
@@ -12,6 +12,137 @@
 
 {% block body %}
 
-    <h1>Hello</h1>
+    <div class="header bg-danger py-2">
+        <div class="container">
+
+            <div class="row">
+                
+                <div class="col">
+                    <div class="logo d-flex justify-content-center align-items-center">Логотип</div>
+                </div>
+
+                <div class="col">
+                    {% if user.is_authenticated %}
+                        <div class="d-flex justify-content-end align-items-center h-100">
+                            <div class="me-3">{{user}} | Выход</div>
+                            <div class="photo"><img src="{{user.photo.url}}" alt="" srcset=""></div>
+                        </div>
+                    {% else %}
+                        <div class="d-flex justify-content-end align-items-center h-100">Войти</div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-4 block-1 mt-3 p-3">
+                <div class="text-center">
+                    
+                    <div class="d-flex justify-content-center">
+                        <div class="">
+                            <button class="btn btn-sm btn-primary btn-show" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-controls="collapse1">Администратор системы</button>
+                        </div>
+                        <div class="">
+                            <form action="" method="get">
+                                <button type="submit" class="btn-down">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+    
+                    <div class="collapse" id="collapse1">
+    
+                        <div class="">
+    
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-down-left mx-5" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2 13.5a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1H3.707L13.854 2.854a.5.5 0 0 0-.708-.708L3 12.293V7.5a.5.5 0 0 0-1 0z"/>
+                            </svg>
+    
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-down-right mx-5" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M14 13.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1 0-1h4.793L2.146 2.854a.5.5 0 1 1 .708-.708L13 12.293V7.5a.5.5 0 0 1 1 0z"/>
+                            </svg>
+    
+                        </div>
+    
+                        <button class="btn btn-sm btn-primary btn-show" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-controls="collapse2">Системный администратор</button>
+    
+                        <button class="btn btn-sm btn-primary btn-show" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-controls="collapse2">Контент менеджер аппарата управления</button>
+    
+                        <div class="collapse" id="collapse2">
+                            
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                                </svg>
+                            </div>                
+                            
+                            <button class="btn btn-sm btn-primary btn-show" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-controls="collapse3">Редактор</button>
+    
+                            <div class="collapse" id="collapse3">
+    
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                                    </svg>
+                                </div>    
+    
+                                <button class="btn btn-sm btn-primary btn-show" type="button">Пользователь системы</button>
+
+                            </div>
+    
+                        </div>
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+
+                <div class="col block-2 ms-2 mt-3 p-3 overflow-scroll">
+                    
+                    <div class="collapse" id="collapse1">
+
+                        <h3>Администраторы системы</h3>
+
+                        <ul>
+                            {% for user in admin_sys %}
+                                <li>
+                                    {{user}}
+                                </li>                                
+                            {% endfor %}
+                        </ul>              
+                        <hr>      
+                    </div>
+
+                    <div class="collapse" id="collapse2">
+
+                        <h3>Системный администратор</h3>
+
+                        <ul>
+                            {% for user in sys_admin %}
+                                <li>
+                                    {{user}}
+                                </li>                                
+                            {% endfor %}
+                        </ul>
+                        <hr>
+                    </div>
+
+                </div>
+
+            </div>
+    
+        </div>
+        
+
 
 {% endblock %}

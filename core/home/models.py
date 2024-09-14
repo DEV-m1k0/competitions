@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 
 # Create your models here.
 
@@ -21,7 +22,7 @@ class Skip(models.Model):
     def __str__(self) -> str:
         return str(self.title)
 
-class User(models.Model):
+class MyUser(AbstractUser, PermissionsMixin):
     """
     Модель пользователей
     """
@@ -34,22 +35,19 @@ class User(models.Model):
         ('Пользователь системы', 'Пользователь системы')
     ]
     role = models.CharField(max_length=50, choices=CHOICE)
-    name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    work_number = models.IntegerField()
+    work_number = models.IntegerField(blank=True, null=True)
     home_number = models.IntegerField(blank=True, null=True)
-    email = models.EmailField()
-    cabinet = models.IntegerField()
+    cabinet = models.IntegerField(blank=True, null=True)
     skip = models.ManyToManyField(Skip, blank=True)
     photo = models.ImageField(upload_to='data/')
 
     def __str__(self) -> str:
-        return f'{self.name} {self.middle_name} {self.last_name}'
+        return str(self.username)
     
 
 class Course(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100)
     start = models.DateField()
     end = models.DateField()

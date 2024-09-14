@@ -48,6 +48,8 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'data'
 
+AUTH_USER_MODEL = 'home.MyUser'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
