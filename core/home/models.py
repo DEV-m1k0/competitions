@@ -35,13 +35,11 @@ class MyUser(AbstractUser, PermissionsMixin):
         ('Пользователь системы', 'Пользователь системы')
     ]
     role = models.CharField(max_length=50, choices=CHOICE)
-    middle_name = models.CharField(max_length=50)
     work_number = models.IntegerField(blank=True, null=True)
     home_number = models.IntegerField(blank=True, null=True)
     cabinet = models.IntegerField(blank=True, null=True)
     skip = models.ManyToManyField(Skip, blank=True)
     photo = models.ImageField(upload_to='data/')
-    # course = models.ForeignKey('Course', on_delete=models.DO_NOTHING)
 
     def __str__(self) -> str:
         return str(self.username)
