@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('users/<int:id>/', HomeUsersView.as_view(), name='user_by_id'),
-    path('user/editing/<int:id>', HomeUsereditingView.as_view(), name='user_editing')
+    path('user/editing/<int:id>', HomeUsereditingView.as_view(), name='user_editing'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

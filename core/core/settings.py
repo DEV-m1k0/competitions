@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home'
+    'home',
+
+    # Подключение api
+    'rest_framework'
 ]
 
 STATICFILES_DIRS = [
