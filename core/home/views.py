@@ -36,3 +36,25 @@ class HomeUsersView(TemplateView):
         }
 
         return render(request=request, template_name='home.html', context=context)
+    
+
+class HomeUsereditingView(TemplateView):
+    template_name = 'home.html'
+
+    def get(self, request: HttpRequest, id, *args: Any, **kwargs: Any) -> HttpResponse:
+
+        role = {
+            1: 'Администратор системы',
+            2: 'Системный администратор',
+            3: 'Контент менеджер аппарата управления',
+            4: 'Редактор',
+            5: 'Пользователь системы'
+        }[int(request.get_full_path()[-1])]
+
+        context = {
+            'users_editing': MyUser.objects.filter(id=id),
+            'users': MyUser.objects.filter(role=role),
+            'title': role,
+        }
+
+        return render(request=request, template_name=self.template_name, context=context)

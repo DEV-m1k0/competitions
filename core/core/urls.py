@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from home.views import HomeView, HomeUsersView
+from home.views import HomeView, HomeUsersView, HomeUsereditingView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
-    path('users/<int:id>/', HomeUsersView.as_view(), name='user_by_id')
+    path('users/<int:id>/', HomeUsersView.as_view(), name='user_by_id'),
+    path('user/editing/<int:id>', HomeUsereditingView.as_view(), name='user_editing')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

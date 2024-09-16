@@ -41,6 +41,7 @@ class MyUser(AbstractUser, PermissionsMixin):
     cabinet = models.IntegerField(blank=True, null=True)
     skip = models.ManyToManyField(Skip, blank=True)
     photo = models.ImageField(upload_to='data/')
+    # course = models.ForeignKey('Course', on_delete=models.DO_NOTHING)
 
     def __str__(self) -> str:
         return str(self.username)
@@ -51,3 +52,6 @@ class Course(models.Model):
     title = models.CharField(max_length=100)
     start = models.DateField()
     end = models.DateField()
+
+    def __str__(self) -> str:
+        return str(self.title)
