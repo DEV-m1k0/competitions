@@ -52,6 +52,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'data'
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
 AUTH_USER_MODEL = 'home.MyUser'
 
 MIDDLEWARE = [

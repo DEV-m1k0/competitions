@@ -44,24 +44,17 @@ class HomeUsereditingView(TemplateView):
 
     def get(self, request: HttpRequest, id, *args: Any, **kwargs: Any) -> HttpResponse:
 
-        role = {
-            1: 'Администратор системы',
-            2: 'Системный администратор',
-            3: 'Контент менеджер аппарата управления',
-            4: 'Редактор',
-            5: 'Пользователь системы'
-        }[int(request.get_full_path()[-1])]
-
         user = MyUser.objects.get(id=id)
         skips = user.skip.all()
 
-        # print(skips)
+        role = user.role
 
         context = {
             'users_editing': user,
             'users': MyUser.objects.filter(role=role),
             'title': role,
             'skips': skips,
+            'MyUserForm': MyUserForm,
         }
 
         return render(request=request, template_name=self.template_name, context=context)
