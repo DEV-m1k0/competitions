@@ -3,7 +3,8 @@ from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from home.models import MyUser
+from home.models import MyUser, Skip
+from .forms import MyUserForm
 
 # Create your views here.
 
@@ -51,10 +52,16 @@ class HomeUsereditingView(TemplateView):
             5: 'Пользователь системы'
         }[int(request.get_full_path()[-1])]
 
+        user = MyUser.objects.get(id=id)
+        skips = user.skip.all()
+
+        # print(skips)
+
         context = {
-            'users_editing': MyUser.objects.filter(id=id),
+            'users_editing': user,
             'users': MyUser.objects.filter(role=role),
             'title': role,
+            'skips': skips,
         }
 
         return render(request=request, template_name=self.template_name, context=context)

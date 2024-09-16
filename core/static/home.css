@@ -41,3 +41,8 @@
 .block-news {
     height: 80vh;
 }
+
+td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
