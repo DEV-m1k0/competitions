@@ -1,0 +1,38 @@
+.header .logo {
+    height: 75px;
+    background-color: #ffffff;
+    width: 75px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+}
+
+.header .photo img {
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+}
+
+.block {
+    box-shadow: 0px 0px 5px grey;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+.block-1 .btn-show {
+    width: 300px;
+}
+
+td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

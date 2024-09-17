@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'dist/css/bootstrap.css' %}">
+    {% block links %}
+
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% block body %}
+    {% endblock %}
+</body>
+<script src="{% static 'dist/js/bootstrap.js' %}"></script>
+{% block scripts %}
+{% endblock %}
+</html>
