@@ -42,7 +42,7 @@ class MyUser(AbstractUser, PermissionsMixin):
     home_number = models.IntegerField(blank=True, null=True)
     cabinet = models.IntegerField(blank=True, null=True)
     skip = models.ManyToManyField(Skip, blank=True)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='data/')
 
     def __str__(self) -> str:
         return str(self.username)
