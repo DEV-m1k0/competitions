@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Подключение наших приложений
     'home',
     'api',
+    'login',
 
     # Подключение api
     'rest_framework',
