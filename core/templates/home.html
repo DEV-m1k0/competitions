@@ -12,7 +12,7 @@
 
 {% block body %}
 
-    <div class="header bg-danger py-2">
+    <div class="header bg-primary py-2">
         <div class="container">
 
             <div class="row">
@@ -25,13 +25,13 @@
                     {% if user.is_authenticated %}
                         <div class="d-flex justify-content-end align-items-center h-100">
                             <div class="me-3">
-                                {{user}} | <a href="{% url 'rest_framework:logout' %}">Выход</a>
+                                {{user}} | <a class="text-light text-decoration-none" href="{% url 'rest_framework:logout' %}">Выход</a>
                             </div>
                             <div class="photo"><img src="{{user.photo.url}}" alt="" srcset=""></div>
                         </div>
                     {% else %}
                         <div class="d-flex justify-content-end align-items-center h-100">
-                            <a href="{% url 'rest_framework:login' %}">Войти</a>
+                            <a class="text-light text-decoration-none" href="{% url 'rest_framework:login' %}">Войти</a>
                         </div>
                     {% endif %}
                 </div>
@@ -392,6 +392,4 @@
 
     </div>
         
-    {{MyUserForm.as_ul}}
-
 {% endblock %}
