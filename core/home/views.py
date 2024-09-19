@@ -66,11 +66,8 @@ class HomeUsereditingView(TemplateView):
     
     def post(self, request: HttpRequest, id: int):
 
+        response = work_with_db.add_to_db(request, id)
 
-        print(work_with_db.add_to_db(request, id))
-
-        # response = work_with_db.add_to_db(request, id)
-
-        return self.get(request=request, id=id)
+        return self.get(request=request, id=id, response=response)
     
 

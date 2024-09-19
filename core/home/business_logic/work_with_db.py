@@ -10,12 +10,10 @@ def add_to_db(request: HttpRequest, id: int):
 
     type_data = check_data(request)
 
-    print(type_data)
-
     response = {
         "update_user": update_user(request, user),
         "add_skip": add_skip(request, user),
-        'file_of_skips': add_skip_from_excel(request, user)
+        "add_skip_from_excel": add_skip_from_excel(request, user),
     }[type_data]
 
     return response
@@ -29,7 +27,7 @@ def check_data(request: HttpRequest):
         return 'add_skip'
     
     elif 'file_of_skips' in request.POST or 'file_of_skips' in request.FILES:
-        return 'file_of_skips'
+        return 'add_skip_from_excel'
 
 
 
