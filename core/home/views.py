@@ -1,10 +1,12 @@
 from typing import Any
 from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import TemplateView
-from home.models import MyUser, Skip
-from .forms import MyUserForm, SkipForm
+from home.models import MyUser
+from .forms import MyUserForm, SkipForm, SkipFromExcelForm
+from .business_logic import work_with_db
+
 
 # Create your views here.
 
@@ -42,9 +44,7 @@ class HomeUsersView(TemplateView):
 class HomeUsereditingView(TemplateView):
     template_name = 'home.html'
 
-    def get(self, request: HttpRequest, id, *args: Any, **kwargs: Any) -> HttpResponse:
-
-
+    def get(self, request: HttpRequest, id, response: tuple[bool, str] = [None, None], *args: Any, **kwargs: Any) -> HttpResponse: # type: ignore
         user = MyUser.objects.get(id=id)
         skips = user.skip.all()
 
@@ -56,34 +56,21 @@ class HomeUsereditingView(TemplateView):
             'title': role,
             'skips': skips,
             'MyUserForm': MyUserForm,
-            'SkipForm': SkipForm
+            'SkipForm': SkipForm,
+            'SkipFromExcelForm': SkipFromExcelForm,
+            'boolResponse': response[0],
+            'textResponse': response[1]
         }
 
         return render(request=request, template_name=self.template_name, context=context)
     
-    def post(self, request: HttpRequest, id):
-
-        # print(request.POST)
-        # print(request.POST['first_name'])
+    def post(self, request: HttpRequest, id: int):
 
 
-        try:
-            user = MyUser.objects.get(id=id)
+        print(work_with_db.add_to_db(request, id))
 
-            user.first_name=request.POST['first_name']
-            user.role = request.POST['role']
-            user.work_number=int(request.POST['work_number'])
-            user.home_number=int(request.POST['home_number'])
-            user.email=request.POST['email']
-
-            user.save()
-
-        except:
-            form = SkipForm(request.POST)
-
-            if form.is_valid():
-                skip = form.save()
-                user.skip.add(skip)
-
+        # response = work_with_db.add_to_db(request, id)
 
         return self.get(request=request, id=id)
+    
+

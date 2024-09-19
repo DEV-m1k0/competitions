@@ -420,6 +420,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -452,12 +453,11 @@
                                 <div class="d-flex justify-content-end mt-1">
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2">Добавить</button>
 
-                                    <form method="post">
-                                        {% csrf_token %}
-
-                                        <div class="modal fade" id="modal2">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
+                                    <div class="modal fade" id="modal2">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="" method="post">
+                                                    {% csrf_token %}
                                                     <div class="modal-header">
                                                         <h5>Добавление пропуска</h5>
                                                         <button type="button" class="btn btn-close" data-bs-dismiss="modal"></button>
@@ -481,18 +481,41 @@
                                                                 <td>{{SkipForm.cause}}</td>
                                                             </tr>
                                                         </table>
-    
+
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                                        <button type="button" class="btn btn-sm btn-light" data-bs-target="#modal-import-skips" data-bs-toggle="modal">Добавить с помощью excel</button>
                                                         <button type="submit" class="btn btn-primary">Сохранить</button>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
+                                    </div>
 
-                                    </form>
                                     
+                                    <div class="modal fade" id="modal-import-skips">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="modal-header">
+                                                        <h5>Добавление пропуска через excel</h5>
+                                                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body text-start">
+                                                        Выберите <strong>excel</strong> файл с пропусками: 
+                                                        <div class="text-center my-4">
+                                                            {{SkipFromExcelForm}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-sm btn-light" data-bs-target="#modal2" data-bs-toggle="modal">Назад</button>
+                                                        <button class="btn btn-primary" type="submit">Сохранить</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -507,6 +530,46 @@
         {% endif %}
 
     </div>
+
+
+    
+
+    <!-- Уведомления о изменениях на сайте -->
+    {% if boolResponse %}
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="{{users_editing.photo.url}}" class="rounded me-2" style="width: 50px; height: 50px;">
+                <strong class="me-auto">{{users_editing}}</strong>
+                <small>Только что</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-white">
+                {{textResponse}}
+            </div>
+            </div>
+        </div>
+
+    {% else %}
+        {% if boolResponse != None %}
+
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="{{users_editing.photo.url}}" class="rounded me-2" style="width: 50px; height: 50px;">
+                    <strong class="me-auto">{{users_editing}}</strong>
+                    <small>Только что</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-white">
+                    {{textResponse}}
+                </div>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endif %}
 
     
         

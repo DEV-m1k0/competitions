@@ -3,6 +3,14 @@ from .models import MyUser, Skip
 from .models import CHOICE
 
 
+class SkipFromExcelForm(forms.Form):
+    file_of_skips = forms.FileField(widget=forms.FileInput(attrs={
+        'class': 'form-control-sm',
+        'accept': '.xlsx, .xlsm, .xlsb, .xltx',
+        'type': 'file'
+    }))
+
+
 class SkipForm(forms.ModelForm):
     class Meta:
         model = Skip
