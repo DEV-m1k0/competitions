@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Подключение наших приложений
     'home',
     'api',
+    'login',
 
     # Подключение api
     'rest_framework',
@@ -69,8 +70,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
-
-MEDIA_ROOT = 'data'
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'

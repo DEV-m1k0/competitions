@@ -12,7 +12,7 @@
 
 {% block body %}
 
-    <div class="header bg-danger py-2">
+    <div class="header bg-primary py-2">
         <div class="container">
 
             <div class="row">
@@ -25,13 +25,17 @@
                     {% if user.is_authenticated %}
                         <div class="d-flex justify-content-end align-items-center h-100">
                             <div class="me-3">
-                                {{user}} | <a href="{% url 'rest_framework:logout' %}">Выход</a>
+                                {{user}} | <a class="text-light text-decoration-none" href="{% url 'rest_framework:logout' %}">Выход</a>
                             </div>
-                            <div class="photo"><img src="{{user.photo.url}}" alt="" srcset=""></div>
+                            {% if user.photo %}
+                                <div class="photo"><img src="{{user.photo.url}}" alt="" srcset=""></div>
+                            {% else %}
+                                <div class="photo"><img src="{% static 'img/profile.png' %}" alt="" srcset=""></div>
+                            {% endif %}
                         </div>
                     {% else %}
                         <div class="d-flex justify-content-end align-items-center h-100">
-                            <a href="{% url 'rest_framework:login' %}">Войти</a>
+                            <a class="text-light text-decoration-none" href="{% url 'rest_framework:login' %}">Войти</a>
                         </div>
                     {% endif %}
                 </div>
@@ -187,168 +191,238 @@
             <div class="col p-3 block">
                 <div class="card text-center h-100">
                         <div class="card-header">
-                            <img src="{{users_editing.photo.url}}" alt="" style="width: 40px; height: 40px; border-radius: 100%;">
+                            {% if users_editing.photo %}
+                                <img src="{{users_editing.photo.url}}" alt="" style="width: 40px; height: 40px; border-radius: 100%;">
+                            {% else %}
+                                <img src="{% static 'img/profile.png' %}" style="width: 40px; height: 40px; border-radius: 100%;">
+                            {% endif %}
                             {{users_editing}} | {{users_editing.first_name}} {{users_editing.last_name}}
                         </div>
                     <div class="card-body">
 
                         <div class="row">
+
                             <div class="col">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="text-center">
+                                        <h4>Редактирование</h4>
+                                        <hr>
+                                    </div>
 
-                                <div class="text-center">
-                                    <h4>Редактирование</h4>
-                                    <hr>
-                                </div>
+                                    <div class="text-start">
 
-                                <div class="text-start">
+                                        <p class="card-text">
 
+                                            <strong>ФИО: </strong>
 
-                                    <p class="card-text" >
-        
-                                        <strong>Фото: </strong> 
+                                            <span id="spanUsername">{{users_editing.first_name}}</span>
 
-                                        {{MyUserForm.photo}}
-            
-                                    </p>
-            
-            
-                                    <p class="card-text">
-            
-                                        <strong>Роль:</strong> 
-                                        
-                                        <span id="role">{{users_editing.role}}</span>
-            
-                                        {{MyUserForm.role}}
-            
-                                        <button id="buttonRole" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                            </svg>
-                                        </button>
-            
-                                        <script>
-                                            let buttonRole = document.getElementById('buttonRole')
-                                            let selectRole = document.getElementById('selectRole')
-                                            let inputRole = document.getElementById('role')
-            
-                                            const newRole = () => {
-                                                inputRole.classList.add('d-none')
-                                                selectRole.classList.remove('d-none')
-                                                buttonRole.classList.add('d-none')
-                                            }
-            
-                                            buttonRole.addEventListener('click', newRole)
-            
-                                        </script>
-            
-                                    </p>
-            
-            
-                                    <p class="card-text"></p>
-            
-                                        <strong>Рабочий номер: </strong>
-            
-                                        <span id="spanWorkNumber">+{{users_editing.work_number}}</span>
-            
-                                        {{MyUserForm.work_number}}
+                                            {{MyUserForm.first_name}}
 
-                                        <button id="btnWorkNumber" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                            </svg>
-                                        </button>
-            
-                                        <script>
-                                            let spanWorkNumber = document.getElementById('spanWorkNumber')
-                                            let inputWorkNumber = document.getElementById('inputWorkNumber')
-                                            let btnWorkNumber = document.getElementById('btnWorkNumber')
-            
-                                            const newWorkNumber = () => {
-                                                spanWorkNumber.classList.add('d-none')
-                                                inputWorkNumber.classList.remove('d-none')
-                                                inputWorkNumber.value = '+{{users_editing.work_number}}'
-                                                btnWorkNumber.classList.add('d-none')
-                                            }
-            
-                                            btnWorkNumber.addEventListener('click', newWorkNumber)
-            
-                                        </script>
-            
-                                    </p>
-            
-            
-                                    <p class="card-text"></p>
-            
-                                        <strong>Домашний номер: </strong>
-            
-                                        <span id="spanHomeNumber">+{{users_editing.home_number}}</span>
-            
-                                        {{MyUserForm.home_number}}
-                                        
-                                        <button id="btnHomeNumber" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                            </svg>
-                                        </button>
-            
-                                        <script>
-                                            let spanHomeNumber = document.getElementById('spanHomeNumber')
-                                            let inputHomeNumber = document.getElementById('inputHomeNumber')
-                                            let btnHomeNumber = document.getElementById('btnHomeNumber')
-            
-                                            const newHomeNumber = () => {
-                                                spanHomeNumber.classList.add('d-none')
-                                                inputHomeNumber.classList.remove('d-none')
-                                                inputHomeNumber.value = "+{{users_editing.home_number}}"
-                                                btnHomeNumber.classList.add('d-none')
-                                            }
-            
-                                            btnHomeNumber.addEventListener('click', newHomeNumber)
-            
-                                        </script>
-            
-                                    </p>
-            
-                                    <p class="card-text"></p>
-            
-                                        <strong>Почта: </strong>
-            
-                                        <span id="spanEmail">{{users_editing.email}}</span>
-            
-                                        <input type="email" class="d-none" name="" id="inputEmail" value="{{users_editing.email}}">
-            
-                                        <button id="btnEmail" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                            </svg>
-                                        </button>
-            
-                                        <script>
-                                            let spanEmail = document.getElementById('spanEmail')
-                                            let inputEmail = document.getElementById('inputEmail')
-                                            let btnEmail = document.getElementById('btnEmail')
-            
-                                            const newEmail = () => {
-                                                spanEmail.classList.add('d-none')
-                                                inputEmail.classList.remove('d-none')
-                                                btnEmail.classList.add('d-none')
-                                            }
-            
-                                            btnEmail.addEventListener('click', newEmail)
-            
-                                        </script>
-            
-                                    </p>
-                                    <div class="">
+                                            <button id="buttonUsername" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                </svg>
+                                            </button>
+
+                                            <script>
+
+                                                const buttonUsername = document.getElementById('buttonUsername')
+
+                                                buttonUsername.addEventListener('click', function () {
+
+                                                    const spanUsername = document.getElementById('spanUsername')
+                                                    const inputUsername = document.getElementById('inputUsername')
+
+                                                    buttonUsername.classList.add('d-none')
+                                                    spanUsername.classList.add('d-none')
+                                                    inputUsername.classList.remove('d-none')
+
+                                                })
+
+                                            </script>
+
+                                        </p>
+                
+                
+                                        <p class="card-text">
+                
+                                            <strong>Роль:</strong> 
+                                            
+                                            <span id="spanRole">{{users_editing.role}}</span>
+                
+                                            {{MyUserForm.role}}
+                
+                                            <button id="buttonRole" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                </svg>
+                                            </button>
+                
+                                            <script>
+
+                                                let buttonRole = document.getElementById('buttonRole')
+
+                                                document.addEventListener("DOMContentLoaded", function () {
+
+                                                    const inputRole = document.querySelector('#selectRole')
+                                                    const inputUsername = document.getElementById('inputUsername')
+
+                                                    inputRole.value = '{{users_editing.role}}'
+                                                    inputUsername.value = '{{users_editing.first_name}}'
+
+                                                    if ('{{users_editing.work_number}}' != 'None') {
+                                                        inputWorkNumber.value = '{{users_editing.work_number}}'
+                                                        inputHomeNumber.value = '{{users_editing.home_number}}'
+                                                    }
+
+                                                    else {
+                                                        inputWorkNumber.value = '0'
+                                                        inputHomeNumber.value = '0'
+                                                    }
+
+                                                    
+                                                    inputEmail.value = '{{users_editing.email}}'
+
+                                                })
+
+                                                const newRole = () => {
+                                                    const selectRole = document.getElementById('selectRole')
+                                                    const spanRole = document.getElementById('spanRole')
+
+                                                    spanRole.classList.add('d-none')
+                                                    selectRole.classList.remove('d-none')
+                                                    buttonRole.classList.add('d-none')
+                                                }
+                
+                                                buttonRole.addEventListener('click', newRole)
+                
+                                            </script>
+                
+                                        </p>
+                
+                
+                                        <p class="card-text"></p>
+                
+                                            <strong>Рабочий номер: </strong>
+                
+                                            <span id="spanWorkNumber">+{{users_editing.work_number}}</span>
+                
+                                            {{MyUserForm.work_number}}
+
+                                            <button id="btnWorkNumber" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                </svg>
+                                            </button>
+                
+                                            <script>
+                                                let spanWorkNumber = document.getElementById('spanWorkNumber')
+                                                let inputWorkNumber = document.getElementById('inputWorkNumber')
+                                                let btnWorkNumber = document.getElementById('btnWorkNumber')
+                
+                                                const newWorkNumber = () => {
+                                                    spanWorkNumber.classList.add('d-none')
+                                                    inputWorkNumber.classList.remove('d-none')
+                                                    btnWorkNumber.classList.add('d-none')
+                                                }
+                
+                                                btnWorkNumber.addEventListener('click', newWorkNumber)
+                
+                                            </script>
+                
+                                        </p>
+                
+                
+                                        <p class="card-text"></p>
+                
+                                            <strong>Домашний номер: </strong>
+                
+                                            <span id="spanHomeNumber">+{{users_editing.home_number}}</span>
+                
+                                            {{MyUserForm.home_number}}
+                                            
+                                            <button id="btnHomeNumber" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                </svg>
+                                            </button>
+                
+                                            <script>
+                                                let spanHomeNumber = document.getElementById('spanHomeNumber')
+                                                let inputHomeNumber = document.getElementById('inputHomeNumber')
+                                                let btnHomeNumber = document.getElementById('btnHomeNumber')
+                
+                                                const newHomeNumber = () => {
+                                                    spanHomeNumber.classList.add('d-none')
+                                                    inputHomeNumber.classList.remove('d-none')
+                                                    btnHomeNumber.classList.add('d-none')
+                                                }
+                
+                                                btnHomeNumber.addEventListener('click', newHomeNumber)
+                
+                                            </script>
+                
+                                        </p>
+                
+                                        <p class="card-text"></p>
+                
+                                            <strong>Почта: </strong>
+                
+                                            <span id="spanEmail">{{users_editing.email}}</span>
+                
+                                            {{MyUserForm.email}}
+                                            
+                                            <button id="btnEmail" class="btn btn-sm btn-primary" type="button" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                                </svg>
+                                            </button>
+                
+                                            <script>
+                                                let spanEmail = document.getElementById('spanEmail')
+                                                let inputEmail = document.getElementById('inputEmail')
+                                                let btnEmail = document.getElementById('btnEmail')
+                
+                                                const newEmail = () => {
+                                                    spanEmail.classList.add('d-none')
+                                                    inputEmail.classList.remove('d-none')
+                                                    btnEmail.classList.add('d-none')
+                                                }
+                
+                                                btnEmail.addEventListener('click', newEmail)
+                
+                                            </script>
+                
+                                        </p>
 
                                     </div>
 
-                                </div>
+                                    <div class="text-end">
 
-                                <div class="text-end">
-                                    <a href="#" class="btn btn-primary">Сохранить</a>
-                                </div>
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal">Сохранить</button>
 
+                                        <div class="modal fade" id="modal">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5>Редактирование пользователя</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body text-start">
+                                                        <p>Вы уверены, что хотите применить изменения для пользователя: <strong><u>{{users_editing.first_name}}</u></strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                                        <button type="submit" class="btn btn-primary">Применить</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="col border-2 border-start overflow-scroll">
@@ -358,7 +432,7 @@
                                 <hr>
 
                                 <div class="overflow-scroll" style="height: 240px;">
-                                    <table class="w-100 border-collapse">
+                                    <table class="w-100 border-collapse" id="main-table">
                                         <tr style="background-color: rgba(128, 128, 128, 0.6);">
                                             <th>Название</th>
                                             <th>От</th>
@@ -377,7 +451,72 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-1">
-                                    <button class="btn btn-primary">Добавить</button>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2">Добавить</button>
+
+                                    <div class="modal fade" id="modal2">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="modal-header">
+                                                        <h5>Добавление пропуска</h5>
+                                                        <button type="button" class="btn btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table>
+                                                            <tr>
+                                                                <th>Название:</th>
+                                                                <td>{{SkipForm.title}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>От:</th>
+                                                                <td>{{SkipForm.skip_from}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>По:</th>
+                                                                <td>{{SkipForm.skip_to}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Причина:</th>
+                                                                <td>{{SkipForm.cause}}</td>
+                                                            </tr>
+                                                        </table>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-light" data-bs-target="#modal-import-skips" data-bs-toggle="modal">Добавить с помощью excel</button>
+                                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="modal fade" id="modal-import-skips">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="" method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="modal-header">
+                                                        <h5>Добавление пропуска через excel</h5>
+                                                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body text-start">
+                                                        Выберите <strong>excel</strong> файл с пропусками: 
+                                                        <div class="text-center my-4">
+                                                            {{SkipFromExcelForm}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-sm btn-light" data-bs-target="#modal2" data-bs-toggle="modal">Назад</button>
+                                                        <button class="btn btn-primary" type="submit">Сохранить</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -391,7 +530,47 @@
         {% endif %}
 
     </div>
-        
-    {{MyUserForm.as_ul}}
 
+
+    
+
+    <!-- Уведомления о изменениях на сайте -->
+    {% if boolResponse %}
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast show bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="{{users_editing.photo.url}}" class="rounded me-2" style="width: 50px; height: 50px;">
+                <strong class="me-auto">{{users_editing}}</strong>
+                <small>Только что</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-white">
+                {{textResponse}}
+            </div>
+            </div>
+        </div>
+
+    {% else %}
+        {% if boolResponse != None %}
+
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast show bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="{{users_editing.photo.url}}" class="rounded me-2" style="width: 50px; height: 50px;">
+                    <strong class="me-auto">{{users_editing}}</strong>
+                    <small>Только что</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-white">
+                    {{textResponse}}
+                </div>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endif %}
+
+    
+        
 {% endblock %}
